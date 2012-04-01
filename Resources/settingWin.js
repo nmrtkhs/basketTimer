@@ -2,49 +2,46 @@
  * @author Nomura Takahisa
  */
 var win = Titanium.UI.createWindow({  
-    title:'設定',
-    backgroundColor:'#fff'
+    //title:'設定',
+    navBarHidden:true,
+    //backgroundColor:'#fff'
+    backgroundImage : 'images/TiBgImage.png'
 });
 
-// var label1 = Titanium.UI.createLabel({
-	// color:'#999',
-	// text:'I am Window 2',
-	// font:{fontSize:20,fontFamily:'Helvetica Neue'},
-	// textAlign:'center',
-	// width:'auto'
-// });
-var rowData = [];
+var picker = Titanium.UI.createPicker();
+var column1 = Titanium.UI.createPickerColumn();
 
-var row1 = Ti.UI.createTableViewRow({height:50});
-var sw1 = Ti.UI.createSwitch({
-	right:10,
-	value:false
-});
-row1.add(sw1);
+for(var i=0; i<60; ++i){
+	column1.addRow(Titanium.UI.createPickerRow({title:i+'分', custom_item:i+1}));
+}
 
-var button1 = Ti.UI.createButton({
-	//style: Ti.UI.iPhone.SystemButton.DISCLOSURE,
-	left: 10
-});
-//row1.add(button1);
-row1.className = 'control';
-var row2 = Ti.UI.createTableViewRow({height:50});
-rowData.push(row1);
-rowData.push(row2);
+var column2 = Titanium.UI.createPickerColumn();
+for(var i=0; i<60; ++i){
+	column2.addRow(Titanium.UI.createPickerRow({title:i+'秒', custom_item:i+1}));
+}
+picker.add([column1, column2]);
+picker.selectionIndicator = true;
 
-var tableView = Ti.UI.createTableView({
-	data: rowData,
-	//style: Ti.UI.iPhone.TableViewStyle.GROUPED
-	//top: 50
+// セーブする
+picker.addEventListener('change', function(e){
+	var prevSettingTime = Ti.App.Properties.getInt('settingTime');
+	var settingTime = 0;
+	if(e.columnIndex==0){
+		settingTime = e.rowIndex*60 + (prevSettingTime%60);
+	}else{
+		settingTime = Math.floor(prevSettingTime/60)*60 + e.rowIndex;
+	}	
+	Titanium.API.info('NewsetTimer:'+ settingTime);	
+	Ti.App.Properties.setInt('settingTime', settingTime);
 });
 
-tableView.addEventListener('click', function(e){
-	var index = e.index;
-	var section = e.section;
-	var row = e.row;
-	var rowdata = e.rowdata;
+// 初期位置設定+セーブしたデータを設定
+win.addEventListener('focus', function(e){	
+	var settingTime = Ti.App.Properties.getInt('settingTime');
+	Titanium.API.info('settingTime'+settingTime);
+	picker.setSelectedRow(0, Math.floor(settingTime/60), false);
+	picker.setSelectedRow(1, settingTime%60, false);
 });
 
-win.add(tableView);
-
+win.add(picker);
 exports.win = win;

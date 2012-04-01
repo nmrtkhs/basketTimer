@@ -6,6 +6,11 @@ var tabGroup = Titanium.UI.createTabGroup();
 
 var win1 = require('timerWin').win;
 
+// セッティングタイムがなければ入れておく
+if(!Ti.App.Properties.hasProperty('settingTime')){
+	Ti.App.Properties.setInt('settingTime', 10*60);
+}
+
 // create base UI tab and ro
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
@@ -21,7 +26,7 @@ var tab2 = Titanium.UI.createTab({
     window:win2
 });
 
-var win3 = require('scoreWin').win;
+var win3 = require('alarmWin').win;
 
 var tab3 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
