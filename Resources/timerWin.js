@@ -75,7 +75,7 @@ var label1 = Titanium.UI.createLabel({
 	height : '80dp',
 	textAlign : 'center',
 	top : '10dp',
-	width : 'auto'
+	width : Titanium.UI.SIZE
 });
 
 var startBt = Titanium.UI.createButton({

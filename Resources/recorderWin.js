@@ -11,7 +11,7 @@ var label1 = Titanium.UI.createLabel({
 	text:'I am Window 2',
 	font:{fontSize:20,fontFamily:'Helvetica Neue'},
 	textAlign:'center',
-	width:'auto'
+	width:Titanium.UI.SIZE
 });
 
 win.add(label1);
