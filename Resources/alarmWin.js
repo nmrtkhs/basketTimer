@@ -4,7 +4,11 @@
 
 // 初期化
 function AlarmWin() {
-	var status;
+	var isEdit = false; // 編集中かどうか
+	var alarmData = [];
+	var Util = require('Util');
+	var util = new Util();
+	
 	var init = function() {
 		// SQLiteでデータを取ってきて、もしなければ初期データをいれる
 		Titanium.API.info('好きでよかった');
@@ -19,9 +23,12 @@ function AlarmWin() {
 			Titanium.API.info('DateInsert');
 		} else {
 			Titanium.API.info('ほいさっさ');
+			var i=0;
 			while(rows.isValidRow()) {
 				Titanium.API.info('ARAMA DATE=' + rows.fieldByName('alarm_date') + 'FLAG' + rows.fieldByName('valid'));
+				alarmData[i] = {flag:rows.fieldByName('valid'), time:new Date(rows.fieldByName('alarm_date'))};
 				rows.next();
+				++i;
 			}
 		}
 
@@ -43,26 +50,40 @@ function AlarmWin() {
 	// });
 	var rowData = [];
 
-	var row1 = Ti.UI.createTableViewRow({
-		height : 50
-	});
-	var sw1 = Ti.UI.createSwitch({
-		right : 10,
-		value : false
-	});
-	row1.add(sw1);
-
-	var button1 = Ti.UI.createButton({
-		//style: Ti.UI.iPhone.SystemButton.DISCLOSURE,
-		left : 10
-	});
-	//row1.add(button1);
-	row1.className = 'control';
-	var row2 = Ti.UI.createTableViewRow({
-		height : 50
-	});
-	rowData.push(row1);
-	rowData.push(row2);
+	// var row1 = Ti.UI.createTableViewRow({
+		// height : 50
+	// });
+	// var sw1 = Ti.UI.createSwitch({
+		// right : 10,
+		// value : false
+	// });
+	// row1.add(sw1);
+// 
+	// var button1 = Ti.UI.createButton({
+		// //style: Ti.UI.iPhone.SystemButton.DISCLOSURE,
+		// left : 10
+	// });
+	// //row1.add(button1);
+	// row1.className = 'control';
+	// var row2 = Ti.UI.createTableViewRow({
+		// height : 50
+	// });
+// 	
+	for (var i = 0; i < alarmData.length; i++ ) {
+		Ti.API.info("眠い稲");
+		var row =  Ti.UI.createTableViewRow({height : 50});
+		 row.color = '#000'; 
+		row.font = {fontWeight:'bold'} 
+		row.title = util.dateToStr(alarmData[i].time);
+		var sw = Ti.UI.createSwitch({
+			right : 10,
+			value : alarmData[i].flag
+		});
+		row.add(sw);
+		rowData.push(row);
+	}	
+	// rowData.push(row1);
+	// rowData.push(row2);
 
 	var tableView = Ti.UI.createTableView({
 		data : rowData,
@@ -98,13 +119,19 @@ function AlarmWin() {
 		//navGrp.open(childWin, {animated:true});
 	});
 	
+	var changeTableViewDisplay = function(isEdit){
+		if(isEdit){
+			
+		}
+	};
+	
 	// ナビボタン
 	var rightButton = Titanium.UI.createButton({
 		systemButton : Titanium.UI.iPhone.SystemButton.REFRESH
 	});
 	self.leftNavButton = rightButton;
 	rightButton.addEventListener('click', function() {
-		Ti.API.info("iine");
+		isEdit? isEdit=false:isEdit=true;
 	});
 	self.add(tableView);
 	return self;

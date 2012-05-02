@@ -7,6 +7,8 @@ var timerId = 0;
 var pauseTime = 0;
 var endFlag = false;
 var alarmData = [];
+var Util = require('Util');
+var util = new Util();
 
 // 設定時間のリセット。設定ウインドウで設定された時間を設定し直す
 var getSettingTime = function(){
@@ -38,26 +40,6 @@ var getSettingTime = function(){
 
 var settingTime = getSettingTime();
 
-var dateToStr = function(fromDate) {
-	var msec = Math.floor(fromDate.getMilliseconds() / 10);
-	if(msec < 10)
-		msec = '0' + msec;
-
-	var sec = fromDate.getSeconds();
-	if(sec < 1)
-		sec = '00';
-	else if(sec < 10)
-		sec = '0' + sec;
-
-	var min = fromDate.getMinutes();
-	if(min < 1)
-		min = '00';
-	else if(min < 10)
-		min = '0' + min;
-
-	return min + ':' + sec + ':' + msec;
-};
-
 var win = Titanium.UI.createWindow({
 	title : 'タイマー',
 	//backgroundColor : '#fff',
@@ -67,7 +49,7 @@ var win = Titanium.UI.createWindow({
 var label1 = Titanium.UI.createLabel({
 	color : '#999',
 	backgroundColor : '#fcc',
-	text : dateToStr(settingTime),
+	text : util.dateToStr(settingTime),
 	font : {
 		fontSize : 60,
 		fontFamily : 'Helvetica Neue'
@@ -110,7 +92,7 @@ var updateTimer = function() {
 		}
 	}
 
-	label1.text = dateToStr(new Date(elTime));
+	label1.text = util.dateToStr(new Date(elTime));
 };
 
 startBt.addEventListener('click', function(e) {
@@ -134,7 +116,7 @@ resetBt.addEventListener('click', function(e) {
 	pauseTime = 0;
 	started = new Date();
 	settingTime = getSettingTime();
-	label1.text = dateToStr(settingTime);
+	label1.text = util.dateToStr(settingTime);
 	endFlag = false;
 });
 
