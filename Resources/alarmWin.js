@@ -90,6 +90,7 @@ function AlarmWin() {
 		//style: Ti.UI.iPhone.TableViewStyle.GROUPED
 		//top: 50
 	});
+	
 
 	var scoreWin = require('scoreWin').win;
 
@@ -120,9 +121,12 @@ function AlarmWin() {
 	});
 	
 	var changeTableViewDisplay = function(isEdit){
-		if(isEdit){
-			
-		}
+		//if(isEdit){
+			for (var i = 0; i < rowData.length; i++ ) {				
+				rowData[i].children[0].visible = !isEdit;
+				rowData[i].hasChild = isEdit;
+			}	
+		//}
 	};
 	
 	// ナビボタン
@@ -132,6 +136,7 @@ function AlarmWin() {
 	self.leftNavButton = rightButton;
 	rightButton.addEventListener('click', function() {
 		isEdit? isEdit=false:isEdit=true;
+		changeTableViewDisplay(isEdit);
 	});
 	self.add(tableView);
 	return self;
