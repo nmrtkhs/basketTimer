@@ -114,7 +114,10 @@ function AlarmWin() {
 	});
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
-		for(var i = 0; i < rowData.length; i++) {
+		var buttonTitle = isEdit? "完了" : "編集";
+        self.leftNavButton.title = buttonTitle;        
+
+        for(var i = 0; i < rowData.length; i++) {
 			Ti.API.info("rowdata["+ i + "]" + rowData[i].children);
 			rowData[i].children[0].visible = !isEdit;
 			rowData[i].hasChild = isEdit;
@@ -133,7 +136,8 @@ function AlarmWin() {
 	};
 	// ナビボタン
 	var leftButton = Titanium.UI.createButton({
-		systemButton : Titanium.UI.iPhone.SystemButton.REFRESH
+		title: "編集"
+        //systemButton : Titanium.UI.iPhone.SystemButton.REFRESH
 	});
 	self.leftNavButton = leftButton;
 	leftButton.addEventListener('click', function() {
