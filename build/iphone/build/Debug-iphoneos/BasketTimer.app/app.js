@@ -1,1 +1,0 @@
-/Users/nmrtkhs/proj/BasketTimer/Resources/app.js
