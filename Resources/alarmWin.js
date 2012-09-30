@@ -137,7 +137,6 @@ function AlarmWin() {
 	// ナビボタン
 	var leftButton = Titanium.UI.createButton({
 		title: "編集"
-        //systemButton : Titanium.UI.iPhone.SystemButton.REFRESH
 	});
 	self.leftNavButton = leftButton;
 	leftButton.addEventListener('click', function() {
@@ -147,7 +146,7 @@ function AlarmWin() {
 	
 	// addボタン
 	var rightButton = Titanium.UI.createButton({
-		systemButton : Titanium.UI.iPhone.SystemButton.REFRESH
+		systemButton : Titanium.UI.iPhone.SystemButton.ADD
 	});
 	self.rightNavButton = rightButton;
 	rightButton.addEventListener('click', function() {

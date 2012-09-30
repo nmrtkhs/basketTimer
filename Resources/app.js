@@ -14,28 +14,18 @@ if(!Ti.App.Properties.hasProperty('settingTime')){
 // create base UI tab and ro
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
-    title:'Tab 1',
+    title:'タイマー',
     window: timerWin
 });
 timerWin.containingTab = tab1;
 tabGroup.addTab(tab1);  
-
-
-var recordWin = require('recorderWin').win;
-
-var tab2 = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
-    title:'Tab 2',
-    window:recordWin
-});
-recordWin.containingTab = tab2;
 
 var AlarmWin = require('alarmWin');
 var alarmWin = new AlarmWin();
 
 var tab3 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'Tab 2',
+    title:'アラーム',
     window:alarmWin
 });
 alarmWin.containingTab = tab3;
@@ -44,7 +34,7 @@ var settingWin = require('settingWin').win;
 
 var tab4 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'Tab 2',
+    title:'設定',
     window:settingWin
 });
 settingWin.containingTab = tab4;
@@ -53,7 +43,6 @@ settingWin.containingTab = tab4;
 //  add tabs
 //
 
-tabGroup.addTab(tab2);  
 tabGroup.addTab(tab3);  
 tabGroup.addTab(tab4);  
 
