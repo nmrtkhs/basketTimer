@@ -1,4 +1,6 @@
 tmp
-build/
+build/*
 build.log
-/*.txt
+.fastdev.lock
+.DS_Store
+._*
