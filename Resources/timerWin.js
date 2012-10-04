@@ -37,7 +37,6 @@ var getSettingTime = function(){
 	//alarmData = [{flag:false,time:new Date(9*60*1000)},{flag:false, time:new Date(8*60*1000)}];
 	return settingTime;
 }
-
 var settingTime = getSettingTime();
 
 var win = Titanium.UI.createWindow({
@@ -48,7 +47,6 @@ var win = Titanium.UI.createWindow({
 
 var label1 = Titanium.UI.createLabel({
 	color : '#999',
-	backgroundColor : '#fcc',
 	text : util.dateToStr(settingTime),
 	font : {
 		fontSize : 60,
@@ -56,22 +54,23 @@ var label1 = Titanium.UI.createLabel({
 	},
 	height : '80dp',
 	textAlign : 'center',
-	top : '10dp',
+	top : '100dp',
 	width : Titanium.UI.SIZE
 });
 
 var startBt = Titanium.UI.createButton({
-	title : 'start',
-	top : '200dp',
-	height : '30dp',
-	width : '100dp'
+	title : 'スタート',
+	top : util.windowHeight - 44 * 3 - 22 + 'dp',
+	height : '44dp',
+	width : '264dp'
 });
 
+Ti.API.info(util.windowHeight - 44 * 3);
 var resetBt = Titanium.UI.createButton({
-	title : 'reset',
-	top : '300dp',
-	height : '30dp',
-	width : '100dp'
+	title : 'リセット',
+	top : util.windowHeight - 44 * 2 + 'dp',
+	height : '44dp',
+	width : '264dp'
 });
 
 var updateTimer = function() {
@@ -101,12 +100,12 @@ startBt.addEventListener('click', function(e) {
 		pauseTime += new Date().getTime() - started;
 		Titanium.API.info(pauseTime);
 		clearInterval(timerId);
-		startBt.title = 'start';
+		startBt.title = 'スタート';
 		bStartedTimer = false;
 	} else {
 		started = new Date();
 		timerId = setInterval(updateTimer, 10);
-		startBt.title = 'stop';
+		startBt.title = 'ストップ';
 		bStartedTimer = true;
 	}
 

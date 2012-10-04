@@ -8,7 +8,9 @@ var win = Titanium.UI.createWindow({
     backgroundImage : 'images/TiBgImage.png'
 });
 
-var picker = Titanium.UI.createPicker();
+var picker = Titanium.UI.createPicker({
+    width: "176dp"
+});
 var column1 = Titanium.UI.createPickerColumn();
 
 for(var i=0; i<60; ++i){

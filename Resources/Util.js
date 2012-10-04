@@ -21,4 +21,7 @@ Util.prototype.dateToStr = function(fromDate) {
 	return min + ':' + sec + ':' + msec;
 };
 
+Util.prototype.windowHeight = Titanium.Platform.displayCaps.platformHeight - 44 - 48 - 20;
+Util.prototype.windowWidth = Titanium.Platform.displayCaps.platformWidth;
+
 module.exports = Util;
