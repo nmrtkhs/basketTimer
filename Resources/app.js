@@ -11,6 +11,8 @@ if(!Ti.App.Properties.hasProperty('settingTime')){
 	Ti.App.Properties.setInt('settingTime', 10*60);
 }
 
+Titanium.UI.iPhone.setStatusBarStyle(Titanium.UI.iPhone.StatusBar.TRANSLUCENT_BLACK);
+
 // create base UI tab and ro
 var tab1 = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
@@ -25,7 +27,7 @@ var alarmWin = new AlarmWin();
 
 var tab3 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'アラーム',
+    title:'アラーム設定',
     window:alarmWin
 });
 alarmWin.containingTab = tab3;
@@ -34,7 +36,7 @@ var settingWin = require('settingWin').win;
 
 var tab4 = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
-    title:'設定',
+    title:'タイマー設定',
     window:settingWin
 });
 settingWin.containingTab = tab4;

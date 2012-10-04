@@ -40,9 +40,8 @@ var getSettingTime = function(){
 var settingTime = getSettingTime();
 
 var win = Titanium.UI.createWindow({
-	title : 'タイマー',
-	//backgroundColor : '#fff',
-	backgroundImage : 'images/TiBgImage.png'
+	navBarHidden : true,
+    backgroundImage : 'images/TiBgImage.png'
 });
 
 var label1 = Titanium.UI.createLabel({
