@@ -11,7 +11,9 @@ if(!Ti.App.Properties.hasProperty('settingTime')){
 	Ti.App.Properties.setInt('settingTime', 10*60);
 }
 
-Titanium.UI.iPhone.setStatusBarStyle(Titanium.UI.iPhone.StatusBar.TRANSLUCENT_BLACK);
+if (Ti.Platform.osname == "iphone") {
+    Titanium.UI.iPhone.setStatusBarStyle(Titanium.UI.iPhone.StatusBar.TRANSLUCENT_BLACK);
+}
 
 // create base UI tab and ro
 var tab1 = Titanium.UI.createTab({  
