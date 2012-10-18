@@ -69,7 +69,6 @@ function AlarmWin() {
 				fontSize : 20,
 				fontWeight : 'bold'
 			},
-			top : 3,
 			left : 10,
 			height : 30,
 			width : 100
@@ -80,9 +79,16 @@ function AlarmWin() {
 			height : 27,
 			width : 27,
 			top : Ti.UI.SIZE,
-			left : 10,
-			visible : true
+			left : -20,
+			visible : true,
+            opacity : 0
 		});
+
+        deleteButton.addEventListener('click', function(e) {
+            deleteButton.animate({
+                transform : Ti.UI.create2DMatrix().rotate(-90)
+         	});
+        });
 
 		row.add(item);
 		row.add(sw);
@@ -119,19 +125,43 @@ function AlarmWin() {
 
         for(var i = 0; i < rowData.length; i++) {
 			Ti.API.info("rowdata["+ i + "]" + rowData[i].children);
-			rowData[i].children[0].visible = !isEdit;
-			rowData[i].hasChild = isEdit;
-			// if(isEdit) {
-				// rowData[i].title.animate({
-					// right : 10,
-					// duration : 100
-				// });
-			// } else {
-				// rowData[i].title.animate({
-					// left : 10,
-					// duration : 100
-				// });
-			// }
+			//rowData[i].children[0].visible = !isEdit;
+			//rowData[i].hasChild = isEdit;
+			 if(isEdit) {
+				 rowData[i].children[0].animate({
+			        left : 40,
+				    duration : 300
+			     });
+                 rowData[i].children[1].animate({
+			        right : 40,
+				    duration : 300,
+                    opacity : 0,
+			     });
+
+                 rowData[i].children[2].animate({
+			        left : 10,
+                    opacity : 1.0,
+				    duration : 300
+                    //transform : Ti.UI.create.create2DMatrix().rotate(90)
+			     });
+
+			 } else {
+				 rowData[i].children[0].animate({
+			        left : 10,
+				    duration : 300
+			     });
+                 rowData[i].children[1].animate({
+			        right : 10,
+				    duration : 300,
+                    opacity : 1
+			     });
+                 rowData[i].children[2].animate({
+			        left : -20,
+                    opacity : 0,
+				    duration : 300
+                    //transform : Ti.UI.create.create2DMatrix().rotate(-90)
+			     });
+			 }
 		}
 	};
 	// ナビボタン
