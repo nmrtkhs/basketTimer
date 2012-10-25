@@ -6,6 +6,8 @@
 function AlarmWin() {
 	// 編集中かどうか
 	var isEdit = false;
+    var isDelete = false;
+    var isClickMinusBt = false;
 	var alarmData = [];
 	var Util = require('Util');
 	var util = new Util();
@@ -73,8 +75,17 @@ function AlarmWin() {
 			height : 30,
 			width : 100
 		});
+        
+        var deleteButton = Ti.UI.createButton({
+             height : 44,
+             width  : 88,
+             top    : Ti.UI.SIZE,
+             right  : 20,
+             visible : false,
+             opacity : 0
+         });
 
-		var deleteButton = Ti.UI.createButton({
+		var minusButton = Ti.UI.createButton({
 			backgroundImage : '/images/minusDefault.png',
 			height : 27,
 			width : 27,
@@ -84,15 +95,38 @@ function AlarmWin() {
             opacity : 0
 		});
 
-        deleteButton.addEventListener('click', function(e) {
-            deleteButton.animate({
-                transform : Ti.UI.create2DMatrix().rotate(-90)
-         	});
+         minusButton.addEventListener('click', function(e) {
+            isDelete = !isDelete;
+            isClickMinusBt = true;
+            changeDeleteCellDisplay();
         });
 
+         var changeDeleteCellDisplay = function(){
+            
+             var rotate = 0;
+             var opacity = 0;
+             var visible = false;
+             
+             if (isDelete){
+                 rotate = -90;
+                 opacity = 100;
+                 visible = true;
+             }
+
+             minusButton.animate({
+                 transform : Ti.UI.create2DMatrix().rotate(rotate)
+             });
+
+             deleteButton.animate({
+                 visible : visible,
+                 opacity : opacity
+             });
+         }
+         
 		row.add(item);
 		row.add(sw);
-		row.add(deleteButton);
+        row.add(deleteButton);
+		row.add(minusButton);
 		rowData.push(row);
 	}
 
@@ -111,12 +145,18 @@ function AlarmWin() {
 		var row = e.row;
 		var rowdata = e.rowdata;
 
-
-		if(isEdit) {
-			self.containingTab.open(editAlarmWin, {
-				animated : true
-			});
+		if (isEdit) {
+            if (!isDelete && !isClickMinusBt) {
+		    	self.containingTab.open(editAlarmWin, {
+		    		animated : true
+		    	});
+            } //else if(isDelete && isClickMinusBt) {
+              //  isDelete = false;
+              //  changeDeleteCellDisplay();
+            ///}
 		}
+
+        isClickMinusBt = false;
 	});
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
@@ -138,7 +178,7 @@ function AlarmWin() {
                     opacity : 0,
 			     });
 
-                 rowData[i].children[2].animate({
+                 rowData[i].children[3].animate({
 			        left : 10,
                     opacity : 1.0,
 				    duration : 300
@@ -155,7 +195,7 @@ function AlarmWin() {
 				    duration : 300,
                     opacity : 1
 			     });
-                 rowData[i].children[2].animate({
+                 rowData[i].children[3].animate({
 			        left : -20,
                     opacity : 0,
 				    duration : 300
@@ -164,14 +204,15 @@ function AlarmWin() {
 			 }
 		}
 	};
+
 	// ナビボタン
 	var leftButton = Titanium.UI.createButton({
 		title: "編集"
 	});
 	self.leftNavButton = leftButton;
 	leftButton.addEventListener('click', function() {
-		isEdit ? isEdit = false : isEdit = true;
-		changeTableViewDisplay(isEdit);
+		isEdit = !isEdit;
+        changeTableViewDisplay(isEdit);
 	});
 	
 	// addボタン
@@ -180,8 +221,8 @@ function AlarmWin() {
 	});
 	self.rightNavButton = rightButton;
 	rightButton.addEventListener('click', function() {
-		isEdit ? isEdit = false : isEdit = true;
-		changeTableViewDisplay(isEdit);
+		isEdit = !isEdit;
+        changeTableViewDisplay(isEdit);
 	});
 
 	self.add(tableView);
