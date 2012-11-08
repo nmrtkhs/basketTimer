@@ -8,6 +8,7 @@ function AlarmWin() {
 	var isEdit = false;
     var isDelete = false;
     var isClickMinusBt = false;
+    var deleteRow = -1;
 	var alarmData = [];
 	var Util = require('Util');
 	var util = new Util();
@@ -98,19 +99,21 @@ function AlarmWin() {
          minusButton.addEventListener('click', function(e) {
             isDelete = !isDelete;
             isClickMinusBt = true;
-            changeDeleteCellDisplay();
+            changeDeleteCellDisplay(i);
         });
 
-         var changeDeleteCellDisplay = function(){
+         var changeDeleteCellDisplay = function(index){
             
              var rotate = 0;
              var opacity = 0;
              var visible = false;
+             deleteRow = -1;
              
              if (isDelete){
                  rotate = -90;
                  opacity = 100;
                  visible = true;
+                 deleteRow = index;
              }
 
              minusButton.animate({
@@ -162,7 +165,9 @@ function AlarmWin() {
 		Ti.API.info("rowdata=" + rowData);
 		var buttonTitle = isEdit? "完了" : "編集";
         self.leftNavButton.title = buttonTitle;        
-
+        if(!isEdit){
+            isDelete = isClickMinusBt = false;
+        }
         for(var i = 0; i < rowData.length; i++) {
 			Ti.API.info("rowdata["+ i + "]" + rowData[i].children);
 			//rowData[i].children[0].visible = !isEdit;
@@ -184,8 +189,8 @@ function AlarmWin() {
 				    duration : 300
                     //transform : Ti.UI.create.create2DMatrix().rotate(90)
 			     });
-
-			 } else {
+                			 
+             } else {
 				 rowData[i].children[0].animate({
 			        left : 10,
 				    duration : 300
@@ -201,6 +206,18 @@ function AlarmWin() {
 				    duration : 300
                     //transform : Ti.UI.create.create2DMatrix().rotate(-90)
 			     });
+               
+                 Ti.API.info(deleteRow);
+                 if (deleteRow == i) {
+                    rowData[0].children[3].animate({
+                        transform : Ti.UI.create2DMatrix().rotate(0)
+                    });
+                    rowData[0].children[2].animate({
+                        visible : false,
+                        opacity : 0
+                    });
+                    deleteRow = -1;
+                }
 			 }
 		}
 	};
