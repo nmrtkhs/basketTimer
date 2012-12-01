@@ -96,14 +96,16 @@ function AlarmWin() {
             opacity : 0
 		});
 
-         minusButton.addEventListener('click', function(e) {
-            isDelete = !isDelete;
-            isClickMinusBt = true;
-            changeDeleteCellDisplay(i);
-        });
+        minusButton.addEventListener('click', function(e) {
+            var index = i;
+            return function(e){
+                isDelete = !isDelete;
+                isClickMinusBt = true;
+                changeDeleteCellDisplay(index);
+            }
+        }());
 
          var changeDeleteCellDisplay = function(index){
-            
              var rotate = 0;
              var opacity = 0;
              var visible = false;
@@ -161,6 +163,7 @@ function AlarmWin() {
 
         isClickMinusBt = false;
 	});
+
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
 		var buttonTitle = isEdit? "完了" : "編集";
@@ -207,17 +210,17 @@ function AlarmWin() {
                     //transform : Ti.UI.create.create2DMatrix().rotate(-90)
 			     });
                
-                 Ti.API.info(deleteRow);
-                 if (deleteRow == i) {
-                    rowData[0].children[3].animate({
-                        transform : Ti.UI.create2DMatrix().rotate(0)
+                if (deleteRow == i) {
+                    rowData[i].children[3].animate({
+                        transform : Ti.UI.create2DMatrix().rotate(0),
+                        opacity : 0
                     });
-                    rowData[0].children[2].animate({
+                    rowData[i].children[2].animate({
                         visible : false,
                         opacity : 0
                     });
                     deleteRow = -1;
-                }
+               }
 			 }
 		}
 	};
