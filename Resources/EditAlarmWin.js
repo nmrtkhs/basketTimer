@@ -5,12 +5,15 @@
 // 初期化
 function EditAlarmWin() {
 	var self = Titanium.UI.createWindow({
-		//title:'設定',
 		title : 'アラームを編集',
 		//backgroundColor:'#fff'
 		backgroundImage : 'images/TiBgImage.png'
 	});
 
+    self.selectRow = -1;
+    self.addEventListener('focus', function(){
+    
+    });
 	var picker = Titanium.UI.createPicker();
 	var column1 = Titanium.UI.createPickerColumn();
 

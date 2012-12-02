@@ -78,11 +78,12 @@ function AlarmWin() {
 		});
         
         var deleteButton = Ti.UI.createButton({
+             title  : "消去",
              height : 44,
              width  : 88,
              top    : Ti.UI.SIZE,
-             right  : 20,
-             visible : false,
+             right  : 10,
+             visible : true,
              opacity : 0
          });
 
@@ -109,12 +110,14 @@ function AlarmWin() {
              var rotate = 0;
              var opacity = 0;
              var visible = false;
+             var rightPos = -10;
              deleteRow = -1;
              
              if (isDelete){
                  rotate = -90;
                  opacity = 100;
                  visible = true;
+                 rightPos = 20;
                  deleteRow = index;
              }
 
@@ -123,8 +126,9 @@ function AlarmWin() {
              });
 
              deleteButton.animate({
-                 visible : visible,
-                 opacity : opacity
+                 right   : rightPos,
+                 opacity : opacity,
+                 duration : 300 
              });
          }
          
@@ -152,6 +156,7 @@ function AlarmWin() {
 
 		if (isEdit) {
             if (!isDelete && !isClickMinusBt) {
+                editAlarmWin.selectRow = index;
 		    	self.containingTab.open(editAlarmWin, {
 		    		animated : true
 		    	});
@@ -216,7 +221,7 @@ function AlarmWin() {
                         opacity : 0
                     });
                     rowData[i].children[2].animate({
-                        visible : false,
+                        right   : -10, 
                         opacity : 0
                     });
                     deleteRow = -1;
