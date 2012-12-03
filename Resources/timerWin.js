@@ -23,7 +23,7 @@ var getSettingTime = function(){
 	
 	// アラーム情報セット
 	var db = Titanium.Database.open('mydb');
-	db.execute('CREATE TABLE IF NOT EXISTS D_ALARM (ALARM_DATE INTEGER, VALID BOOL)');	
+	db.execute('CREATE TABLE IF NOT EXISTS D_ALARM (ID INTEGER, ALARM_DATE INTEGER, VALID BOOL)');	
 	var rows = db.execute('SELECT * FROM D_ALARM');
 	var i=0;
 	while(rows.isValidRow()){

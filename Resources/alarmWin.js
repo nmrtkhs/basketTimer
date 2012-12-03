@@ -17,7 +17,7 @@ function AlarmWin() {
 		var db = Titanium.Database.open('mydb');
 
 		//もしテーブルがなかったら初期テーブル作成
-		db.execute('CREATE TABLE IF NOT EXISTS D_ALARM (ALARM_DATE INTEGER, VALID BOOL)');
+		db.execute('CREATE TABLE IF NOT EXISTS D_ALARM (ID INTEGER, ALARM_DATE INTEGER, VALID BOOL)');
 
 		// 全データ取得
 		var rows = db.execute('SELECT * FROM D_ALARM');
@@ -25,7 +25,7 @@ function AlarmWin() {
 		// もしデータがはいってなかったらデータをいれる(1件くらいデータが入ってた方がユーザとしてもわかりやすいので)
 		// TODO:2012nomura いずれはとるよ
 		if(!rows.isValidRow()) {
-			db.execute('INSERT INTO D_ALARM (ALARM_DATE,VALID) VALUES(?,?)', 60 * 9 * 1000, false);
+			db.execute('INSERT INTO D_ALARM (ID,ALARM_DATE,VALID) VALUES(?,?,?)', 1, 60 * 9 * 1000, false);
 			var rows = db.execute('SELECT * FROM D_ALARM');
 		}
 
@@ -34,6 +34,7 @@ function AlarmWin() {
 		while(rows.isValidRow()) {
 			Titanium.API.info('ARAMA DATE=' + rows.fieldByName('alarm_date') + 'FLAG' + rows.fieldByName('valid'));
 			alarmData[i] = {
+                id: rows.fieldByName('id'),
 				flag : rows.fieldByName('valid'),
 				time : new Date(rows.fieldByName('alarm_date'))
 			};
@@ -156,7 +157,7 @@ function AlarmWin() {
 
 		if (isEdit) {
             if (!isDelete && !isClickMinusBt) {
-                editAlarmWin.selectRow = index;
+                editAlarmWin.selectId = alarmData[index].id;
 		    	self.containingTab.open(editAlarmWin, {
 		    		animated : true
 		    	});

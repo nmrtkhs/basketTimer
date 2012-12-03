@@ -10,9 +10,9 @@ function EditAlarmWin() {
 		backgroundImage : 'images/TiBgImage.png'
 	});
 
-    self.selectRow = -1;
+    self.selectId = -1;
     self.addEventListener('focus', function(){
-    
+        Ti.API.info("selectRow:"+ self.selectId); 
     });
 	var picker = Titanium.UI.createPicker();
 	var column1 = Titanium.UI.createPickerColumn();
