@@ -2,7 +2,7 @@
  * @author Nomura Takahisa
  */
 
-// 初期化
+// 初期
 function EditAlarmWin() {
 	var self = Titanium.UI.createWindow({
 		title : 'アラームを編集',
@@ -10,11 +10,7 @@ function EditAlarmWin() {
 		backgroundImage : 'images/TiBgImage.png'
 	});
 
-    self.selectId = -1;
-    self.addEventListener('focus', function(){
-        Ti.API.info("selectRow:"+ self.selectId); 
-    });
-	var picker = Titanium.UI.createPicker();
+    var picker = Titanium.UI.createPicker();
 	var column1 = Titanium.UI.createPickerColumn();
 
 	for(var i = 0; i < 60; ++i) {
@@ -33,6 +29,18 @@ function EditAlarmWin() {
 	}
 	picker.add([column1, column2]);
 	picker.selectionIndicator = true;
+    
+    self.selectId = -1;
+    var selectTime;
+    self.addEventListener('focus', function(){
+        var db = Ti.Database.open('mydb');
+
+        var rows = db.execute('SELECT ALARM_DATE FROM D_ALARM WHERE ID = ?', self.selectId);
+        var selectTime = new Date(rows.fieldByName('alarm_date'));
+
+        picker.setSelectedRow(0, selectTime.getMinutes(), false);;
+        picker.setSelectedRow(1, selectTime.getSeconds(), false);
+    });
 
 	// セーブする
 	// picker.addEventListener('change', function(e) {
