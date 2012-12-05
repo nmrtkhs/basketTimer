@@ -10,14 +10,16 @@ function EditAlarmWin() {
 		backgroundImage : 'images/TiBgImage.png'
 	});
 
-    var picker = Titanium.UI.createPicker();
+    var picker = Titanium.UI.createPicker({
+        width: '176dp'
+    });
 	var column1 = Titanium.UI.createPickerColumn();
 
 	for(var i = 0; i < 60; ++i) {
 		column1.addRow(Titanium.UI.createPickerRow({
 			title : i + '分',
 			custom_item : i + 1
-		}));
+        }));
 	}
 
 	var column2 = Titanium.UI.createPickerColumn();
@@ -38,9 +40,28 @@ function EditAlarmWin() {
         var rows = db.execute('SELECT ALARM_DATE FROM D_ALARM WHERE ID = ?', self.selectId);
         var selectTime = new Date(rows.fieldByName('alarm_date'));
 
-        picker.setSelectedRow(0, selectTime.getMinutes(), false);;
+        picker.setSelectedRow(0, selectTime.getMinutes(), false);
         picker.setSelectedRow(1, selectTime.getSeconds(), false);
+
+        rows.close();
+        db.close();
     });
+
+    var rightButton = Titanium.UI.createButton({
+	    title: '保存'
+    });
+
+    rightButton.addEventListener('click', function() {
+        var db = Ti.Database.open('mydb');
+      
+        var selectedTime = ((picker.getSelectedRow(0).custom_item-1)*60 + picker.getSelectedRow(1).custom_item-1) * 1000;
+        db.execute('UPDATE D_ALARM SET ALARM_DATE = ? WHERE ID = ?', selectedTime, self.selectId);
+
+        db.close();
+    });
+
+    self.rightNavButton = rightButton;
+
 
 	// セーブする
 	// picker.addEventListener('change', function(e) {
