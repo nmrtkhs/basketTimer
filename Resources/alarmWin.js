@@ -31,6 +31,7 @@ function AlarmWin() {
 
 		// aalarmDataにデータをいれる
 		var i = 0;
+        alarmData = [];
 		while(rows.isValidRow()) {
 			Titanium.API.info('ARAMA DATE=' + rows.fieldByName('alarm_date') + 'FLAG' + rows.fieldByName('valid'));
 			alarmData[i] = {
@@ -43,7 +44,8 @@ function AlarmWin() {
 
 		rows.close();
 		db.close();
-	}();
+	};
+    init();
 
 	var self = Titanium.UI.createWindow({
 		title : 'アラーム',
@@ -146,6 +148,17 @@ function AlarmWin() {
 		//top: 50
 	});
 
+    var initTableViewTitle = function(){
+        for (var i = 0; i < alarmData.length; ++i) {
+            rowData[i].children[0].text = util.dateToStr(alarmData[i].time);
+        }
+    };
+
+    self.addEventListener('focus', function(){
+        init();  
+        initTableViewTitle();
+    });
+
 	var EditAlarmWin = require('EditAlarmWin')
 	var editAlarmWin = new EditAlarmWin();
 
@@ -158,9 +171,11 @@ function AlarmWin() {
 		if (isEdit) {
             if (!isDelete && !isClickMinusBt) {
                 editAlarmWin.selectId = alarmData[index].id;
-		    	self.containingTab.open(editAlarmWin, {
-		    		animated : true
-		    	});
+		    	//self.containingTab.open(editAlarmWin, {
+		    	    //animated : true,
+                //    transition : Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT
+		    	//});
+                editAlarmWin.open({transition :Titanium.UI.iPhone.AnimationStyle.CURL_UP});
             } //else if(isDelete && isClickMinusBt) {
               //  isDelete = false;
               //  changeDeleteCellDisplay();
@@ -226,7 +241,7 @@ function AlarmWin() {
                         opacity : 0
                     });
                     deleteRow = -1;
-               }
+                 }
 			 }
 		}
 	};
