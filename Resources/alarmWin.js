@@ -171,19 +171,16 @@ function AlarmWin() {
 		if (isEdit) {
             if (!isDelete && !isClickMinusBt) {
                 editAlarmWin.selectId = alarmData[index].id;
-		    	//self.containingTab.open(editAlarmWin, {
-		    	    //animated : true,
-                //    transition : Titanium.UI.iPhone.AnimationStyle.FLIP_FROM_LEFT
-		    	//});
-                editAlarmWin.open({transition :Titanium.UI.iPhone.AnimationStyle.CURL_UP});
-            } //else if(isDelete && isClickMinusBt) {
-              //  isDelete = false;
-              //  changeDeleteCellDisplay();
-            ///}
-		}
-
+                editAlarmWin.open();
+            }
+        }
         isClickMinusBt = false;
 	});
+
+    self.addEventListener("blur", function() {
+        isEdit = false;
+        changeTableViewDisplay(isEdit);
+    });
 
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
@@ -260,11 +257,14 @@ function AlarmWin() {
 	var rightButton = Titanium.UI.createButton({
 		systemButton : Titanium.UI.iPhone.SystemButton.ADD
 	});
+    
+    var AddAlarmWin = require('AddAlarmWin')
+	var addAlarmWin = new AddAlarmWin();
+
 	self.rightNavButton = rightButton;
 	rightButton.addEventListener('click', function() {
-		isEdit = !isEdit;
-        changeTableViewDisplay(isEdit);
-	});
+	    addAlarmWin.open();
+    });
 
 	self.add(tableView);
 	return self;

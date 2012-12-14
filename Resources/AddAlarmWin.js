@@ -3,7 +3,7 @@
  */
 
 // 初期
-function EditAlarmWin() {
+function AddAlarmWin() {
 	var self = Titanium.UI.createWindow({
 		title : 'アラームを編集',
 		//backgroundColor:'#fff'
@@ -102,4 +102,4 @@ function EditAlarmWin() {
 	return self;
 }
 
-module.exports = EditAlarmWin;
+module.exports = AddAlarmWin;
