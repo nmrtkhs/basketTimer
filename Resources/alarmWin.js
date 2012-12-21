@@ -53,100 +53,78 @@ function AlarmWin() {
 	});
 
 	// tableviewに格納する行データ
-	var rowData = [];
-	for(var i = 0; i < alarmData.length; i++) {
-		var row = Ti.UI.createTableViewRow({
-			height : 100
-		});
-		row.color = '#000';
-		row.font = {
-			fontWeight : 'bold'
-		}
-		//row.title = util.dateToStr(alarmData[i].time);
-		var sw = Ti.UI.createSwitch({
-			right : 10,
-			value : alarmData[i].flag
-		});
-
-		var item = Ti.UI.createLabel({
-			color : '#000',
-			text : util.dateToStr(alarmData[i].time),
-			font : {
-				fontSize : 20,
-				fontWeight : 'bold'
-			},
-			left : 10,
-			height : 30,
-			width : 100
-		});
-        
-        var deleteButton = Ti.UI.createButton({
-             title  : "消去",
-             height : 44,
-             width  : 88,
-             top    : Ti.UI.SIZE,
-             right  : 10,
-             visible : true,
-             opacity : 0
-         });
-
-		var minusButton = Ti.UI.createButton({
-			backgroundImage : '/images/minusDefault.png',
-			height : 27,
-			width : 27,
-			top : Ti.UI.SIZE,
-			left : -20,
-			visible : true,
-            opacity : 0
-		});
-
-        minusButton.addEventListener('click', function(e) {
-            var index = i;
-            return function(e){
-                isDelete = !isDelete;
-                isClickMinusBt = true;
-                changeDeleteCellDisplay(index);
+   var rowData = [] 
+    var createRowData = function() {
+        rowData = [];
+        for(var i = 0; i < alarmData.length; i++) {
+            var row = Ti.UI.createTableViewRow({
+                height : 100
+            });
+            row.color = '#000';
+            row.font = {
+                fontWeight : 'bold'
             }
-        }());
+            //row.title = util.dateToStr(alarmData[i].time);
+            var sw = Ti.UI.createSwitch({
+                right : 10,
+                value : alarmData[i].flag
+            });
 
-         var changeDeleteCellDisplay = function(index){
-             var rotate = 0;
-             var opacity = 0;
-             var visible = false;
-             var rightPos = -10;
-             deleteRow = -1;
-             
-             if (isDelete){
-                 rotate = -90;
-                 opacity = 100;
-                 visible = true;
-                 rightPos = 20;
-                 deleteRow = index;
-             }
-
-             minusButton.animate({
-                 transform : Ti.UI.create2DMatrix().rotate(rotate)
+            var item = Ti.UI.createLabel({
+                color : '#000',
+                text : util.dateToStr(alarmData[i].time),
+                font : {
+                    fontSize : 20,
+                    fontWeight : 'bold'
+                },
+                left : 10,
+                height : 30,
+                width : 100
+            });
+            
+            var deleteButton = Ti.UI.createButton({
+                 title  : "消去",
+                 height : 44,
+                 width  : 88,
+                 top    : Ti.UI.SIZE,
+                 right  : 10,
+                 visible : true,
+                 opacity : 0
              });
 
-             deleteButton.animate({
-                 right   : rightPos,
-                 opacity : opacity,
-                 duration : 300 
-             });
-         }
-         
-		row.add(item);
-		row.add(sw);
-        row.add(deleteButton);
-		row.add(minusButton);
-		rowData.push(row);
-	}
+            var minusButton = Ti.UI.createButton({
+                backgroundImage : '/images/minusDefault.png',
+                height : 27,
+                width : 27,
+                top : Ti.UI.SIZE,
+                left : -20,
+                visible : true,
+                opacity : 0
+            });
 
-	var tableView = Ti.UI.createTableView({
-		data : rowData,
+            minusButton.addEventListener('click', function(e) {
+                var index = i;
+                return function(e){
+                    isDelete = !isDelete;
+                    isClickMinusBt = true;
+                    changeDeleteCellDisplay(index);
+                }
+            }());
+
+            row.add(item);// ITEM_VIEW = 0
+            row.add(sw);// SWITCH_VIEW = 1
+            row.add(deleteButton);// DELETE_BT = 2
+            row.add(minusButton);// MINUS_BT_VIEW = 3
+            rowData.push(row);
+        }
+    };
+
+	//var tableView = Ti.UI.createTableView({
+	//	data : rowData,
 		//style: Ti.UI.iPhone.TableViewStyle.GROUPED
 		//top: 50
-	});
+	//});
+    var tableView = Ti.UI.createTableView();
 
     var initTableViewTitle = function(){
         for (var i = 0; i < alarmData.length; ++i) {
@@ -156,6 +134,10 @@ function AlarmWin() {
 
     self.addEventListener('focus', function(){
         init();  
+        if (rowData.length != alarmData.length) {
+            createRowData();
+            tableView.setData(rowData);
+        }
         initTableViewTitle();
     });
 
@@ -181,6 +163,32 @@ function AlarmWin() {
         isEdit = false;
         changeTableViewDisplay(isEdit);
     });
+    
+    var changeDeleteCellDisplay = function(index){
+         var rotate = 0;
+         var opacity = 0;
+         var visible = false;
+         var rightPos = -10;
+         deleteRow = -1;
+         
+         if (isDelete){
+             rotate = -90;
+             opacity = 100;
+             visible = true;
+             rightPos = 20;
+             deleteRow = index;
+         }
+
+         rowData[index].children[3].animate({
+             transform : Ti.UI.create2DMatrix().rotate(rotate)
+         });
+
+         rowData[index].children[2].animate({
+             right   : rightPos,
+             opacity : opacity,
+             duration : 300 
+         });
+     }
 
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
