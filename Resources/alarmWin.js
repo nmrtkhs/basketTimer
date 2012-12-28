@@ -8,6 +8,7 @@ function AlarmWin() {
 	var isEdit = false;
     var isDelete = false;
     var isClickMinusBt = false;
+    var isClickDeleteBt = false;
     var deleteRow = -1;
 	var alarmData = [];
 	var Util = require('Util');
@@ -92,6 +93,14 @@ function AlarmWin() {
                  opacity : 0
              });
 
+            deleteButton.addEventListener('click', function(e) {
+                var index = i;
+                return function(e) {
+                    isClickDeleteBt = true;
+                    tableDeleteRow(index);
+                }
+            }());
+
             var minusButton = Ti.UI.createButton({
                 backgroundImage : '/images/minusDefault.png',
                 height : 27,
@@ -151,11 +160,12 @@ function AlarmWin() {
 		var rowdata = e.rowdata;
 
 		if (isEdit) {
-            if (!isDelete && !isClickMinusBt) {
+            if (!isDelete && !isClickMinusBt && !isClickDeleteBt) {
                 editAlarmWin.selectId = alarmData[index].id;
                 editAlarmWin.open();
             }
         }
+        isClickDeleteBt = false;
         isClickMinusBt = false;
 	});
 
@@ -163,6 +173,10 @@ function AlarmWin() {
         isEdit = false;
         changeTableViewDisplay(isEdit);
     });
+
+    var tableDeleteRow = function(index) {
+        tableView.deleteRow(index);
+    };
     
     var changeDeleteCellDisplay = function(index){
          var rotate = 0;
@@ -188,7 +202,7 @@ function AlarmWin() {
              opacity : opacity,
              duration : 300 
          });
-     }
+     };
 
 	var changeTableViewDisplay = function(isEdit) {
 		Ti.API.info("rowdata=" + rowData);
